@@ -23,7 +23,10 @@ def count_visit():
     data = read_counter()
 
     # 取得訪問者 IP，累加總計與 IP 計數
-    ip = request.remote_addr # 拿到訪問者的 IP
+    ip = request.headers.get("X-Forwarded-For", request.remote_addr).split(',')[0].strip()# 拿到訪問者的 IP
+    # X-Forwarded-For -> 第一個是最原始的 IP
+    # .split(',')[0].strip() -> 確保拿到的是第一個有效的 IP
+
     data["total"] += 1 
     data["ips"][ip] = data["ips"].get(ip, 0) + 1 # 如果這個 IP 第一次訪問，初始化為 0，並加總這個 IP 的訪問次數
 
