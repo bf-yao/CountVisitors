@@ -17,7 +17,7 @@ def write_counter(data):
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=2) # 將更新後的資料寫回 counter.json
 
-# API
+# 紀錄訪問log
 @app.route("/api/visit", methods=["GET"])
 def count_visit():
     data = read_counter()
@@ -44,6 +44,12 @@ def count_visit():
         "your_ip": ip,
         "your_visits": data["ips"][ip]
     })
+
+# 看 json 檔
+@app.route("/api/data")
+def show_data():
+    data = read_counter()
+    return jsonify(data)
 
 # 首頁
 @app.route("/")
